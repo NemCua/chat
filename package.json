@@ -1,0 +1,33 @@
+{
+  "name": "messchat",
+  "version": "1.0.0",
+  "description": "chat",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NemCua/chat.git"
+  },
+  "keywords": [
+    "chat",
+    "mess"
+  ],
+  "author": "nemcua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NemCua/chat/issues"
+  },
+  "homepage": "https://github.com/NemCua/chat#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
