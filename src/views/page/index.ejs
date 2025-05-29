@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="chat-box" id="chatBox">
+        <% messages.forEach(msg => { %>
+            
+            <div class="message <%= msg.idUserSend.toString() === currentUser.id ? 'me' : '' %>">
+                <div class="avatar"></div>
+                <div class="bubble"><%= msg.message %></div>
+            </div>
+          <% }) %>
+      </div>
+    <div class="input-area">
+        <form id="sendForm">
+            <input type="text" name="message" placeholder="Tin nhắn">
+            <select name="idUser" id="personSelect">
+                <% allUsers.forEach(user => { %>
+                  <% if (user._id.toString() !== currentUser.id) { %>
+                    <option value="<%= user._id %>"><%= user.userName %></option>
+                  <% } %>
+                <% }) %>
+              </select>
+              
+            <button type="submit">Gửi</button>
+        </form>
+      </div>
+      <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  const chatBox = document.getElementById('chatBox');
+  const form = document.getElementById('sendForm');
+  const select = document.getElementById('personSelect');
+
+  // Gửi tin nhắn
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const message = form.message.value;
+    const idUser = select.value;
+
+    if (!message) return;
+
+    socket.emit('sendMessage', {
+      message,
+      idUser
+    });
+
+    form.reset();
+  });
+
+  // Nhận tin nhắn mới
+  socket.on('newMessage', (msg) => {
+    const div = document.createElement('div');
+    div.classList.add('message');
+    if (msg.isMe) div.classList.add('me');
+
+    div.innerHTML = `
+      <div class="avatar"></div>
+      <div class="bubble">${msg.message}</div>
+    `;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+
+  // Khi chọn người dùng, gọi API để lấy lại tin nhắn
+  select.addEventListener('change', async () => {
+    const idUser = select.value;
+    const res = await fetch(`/messages/${idUser}`);
+    const messages = await res.json();
+
+    // Xóa tin nhắn cũ
+    chatBox.innerHTML = '';
+
+    // Render lại các tin nhắn
+    messages.forEach(msg => {
+      const div = document.createElement('div');
+      div.classList.add('message');
+      if (msg.idUserSend === "<%= currentUser.id %>") div.classList.add('me');
+
+      div.innerHTML = `
+        <div class="avatar"></div>
+        <div class="bubble">${msg.message}</div>
+      `;
+      chatBox.appendChild(div);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+
+  // Tự động load đoạn chat ban đầu
+  window.addEventListener('load', () => {
+    select.dispatchEvent(new Event('change'));
+  });
+</script>
+</body>
+</html>

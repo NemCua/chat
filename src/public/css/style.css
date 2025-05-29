@@ -1,0 +1,59 @@
+body {
+    font-family: sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+  }
+  .chat-box {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    height: 500px;
+    overflow-y: auto;
+  }
+  .message {
+    display: flex;
+    margin: 10px 0;
+    align-items: flex-end;
+  }
+  .message.me {
+    flex-direction: row-reverse;
+  }
+  .message .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: gray;
+    margin: 0 10px;
+  }
+  .message .bubble {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    background: #eee;
+  }
+  .message.me .bubble {
+    background: #d1e7ff;
+  }
+  .input-area {
+    max-width: 600px;
+    margin: 10px auto;
+    display: flex;
+    gap: 10px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+  }
+  button {
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #personSelect{
+    height: 50px;
+  }
